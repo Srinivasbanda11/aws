@@ -10,3 +10,4 @@ destination_file = config.get('destination', 'file')
 
 content = read_file(source_file)
 shutil.copyfile(source_file, destination_file)
+#mainfile
