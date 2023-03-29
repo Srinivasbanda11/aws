@@ -18,4 +18,4 @@ def send_message(queue_url):
     )
     print(response)
 
-    send_message("Hello, world!")
+    send_message("new message")
