@@ -1,18 +1,21 @@
 import boto3
-from config import QUEUE_NAME
+sqs=boto3.resource('sqs')
+queue=sqs.create_queue(
+ QueueName='my_queue'
+ 
+ )
+print("Created queue '%s' with URL=%s",'my_queue',queue.url)
 
-def send_message_to_queue(message_body):
-    """
-    Sends a message to the specified SQS queue.
-    """
-    # Create an SQS client
-    sqs = boto3.client('sqs')
-    
-    # Get the URL of the queue
-    queue_url = sqs.get_queue_url(QueueName=QUEUE_NAME)['https://us-east-1.console.aws.amazon.com/sqs/v2/home?region=us-east-1#/queues/https%3A%2F%2Fsqs.us-east-1.amazonaws.com%2F017373123744%2Fnewqueue']
-    
-    # Send the message to the queue
-    response = sqs.send_message(
-        QueueUrl=queue_url,
-        MessageBody=message_body
+import config
+
+def send_message(queue_url):
+    sqs_client = boto3.client("sqs")
+
+    message = {"key": "value"}
+    response = sqs_client.send_message(
+        QueueUrl=f"https://us-east-1.console.aws.amazon.com/sqs/v2/home?region=us-east-1#/queues/https%3A%2F%2Fsqs.us-east-1.amazonaws.com%2F017373123744%2Fnewqueue/send-receive,/{config.QUEUE_NAME}",
+        MessageBody=json.dumps(message)
     )
+    print(response)
+
+    send_message("Hello, world!")
