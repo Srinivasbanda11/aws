@@ -1,5 +1,7 @@
 import boto3
 import json
+region_name = "us-east-1"
+
 client = boto3.client('secretsmanager')
 
 
@@ -7,7 +9,7 @@ client = boto3.client('secretsmanager')
 def createSecret():
 
     response = client.create_secret(
-        Name='my-topic-secret-name',
+        Name='DatabaseProdSecrets',
         SecretString='{"username": "admin", "password": "Sreenu@123"}'
     )
 
@@ -19,24 +21,25 @@ def listSecrets():
 
 def fetchSecret():
     response = client.get_secret_value(
-    SecretId='my-topic-secret-name'
+    SecretId='DatabaseProdSecrets'
     )
     database_secrets = json.loads(response['SecretString'])
     return database_secrets['password']
 
 def deleteSecret():
     response = client.delete_secret(
-    SecretId='my-topic-secret-name',
+    SecretId='DatabaseProdSecrets',
     RecoveryWindowInDays=10,
     ForceDeleteWithoutRecovery=False
     )
     return response
 
-createresp = createSecret()
-print(createresp)
+#createresp = createSecret()
+#print(createresp)
 
 listresp = listSecrets()
 print(listresp)
 
 #deleteresp =deleteSecret()
 #print(deleteresp)
+
